@@ -23,6 +23,7 @@ conda activate BridgeNet
 pip install -r requirements.txt
 ```
 ## Model Structure
+<img src='model.png' width='1000'>
 
 ## Training Your Own Models
 ```
