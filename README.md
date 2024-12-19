@@ -1,5 +1,5 @@
 # BridgeNet
-The official PyTorch implementation for our paper:
+The official PyTorch implementation for our paper:*[Bridge to better understanding: Syntax extension with virtual linking-phrase for natural language inference](https://www.sciencedirect.com/science/article/pii/S0950705124012425)*
 ```
 @article{KIM2024112608,
 title = {Bridge to better understanding: Syntax extension with virtual linking-phrase for natural language inference},
