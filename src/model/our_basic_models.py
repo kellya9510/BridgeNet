@@ -722,11 +722,11 @@ class DiffAttn(nn.Module):
 class Token2Word(nn.Module):
     def __init__(self, dropout):
         super(Token2Word, self).__init__()
-        # self.dropout = nn.Dropout(dropout)  # 일반화된 정보를 사용
-        # self.reset_parameters
+        self.dropout = nn.Dropout(dropout) 
+        self.reset_parameters
 
-    # def reset_parameters(self):
-    #     self.dropout.reset_parameters()
+    def reset_parameters(self):
+        self.dropout.reset_parameters()
 
     def forward(self, hidden_states, word_idxs, max_word_len):
         output = self.mean_pooling(word_idxs, max_word_len, hidden_states.size(1))
@@ -1006,38 +1006,7 @@ class GCN(nn.Module):
         return output_node_embeddings
 
 
-class CoAttn(nn.Module):
-    def __init__(self, out_size, attn_size):
-        super(CoAttn, self).__init__()
 
-        self.W = nn.Parameter(torch.Tensor(out_size, out_size))
-
-        self.Wv = nn.Parameter(torch.Tensor(out_size, attn_size))
-        self.Wq = nn.Parameter(torch.Tensor(out_size, attn_size))
-
-        nn.init.xavier_uniform_(self.Wv, gain=nn.init.calculate_gain('tanh'))
-        nn.init.xavier_uniform_(self.Wq, gain=nn.init.calculate_gain('tanh'))
-
-        self.w_hv = nn.Parameter(torch.Tensor(attn_size, 1))
-        self.w_hq = nn.Parameter(torch.Tensor(attn_size, 1))
-        nn.init.xavier_uniform_(self.w_hv, gain=nn.init.calculate_gain('linear'))
-        nn.init.xavier_uniform_(self.w_hq, gain=nn.init.calculate_gain('linear'))
-
-    def forward(self, seq_features1, seq_features2, mask1, mask2):
-        C = F.tanh(torch.matmul(torch.matmul(seq_features1, self.W), torch.transpose(seq_features2, 1, 2)))
-
-        Hv = F.tanh(torch.matmul(seq_features1, self.Wv) + torch.matmul(C, torch.matmul(seq_features2, self.Wq)))
-        Hq = F.tanh(torch.matmul(seq_features2, self.Wq) + torch.matmul(torch.transpose(C, 1, 2),
-                                                                        torch.matmul(seq_features1, self.Wv)))
-
-        attn_v = masked_softmax(torch.matmul(Hv, self.w_hv).squeeze(), mask1, 1)
-        attn_q = masked_softmax(torch.matmul(Hq, self.w_hq).squeeze(), mask2, 1)
-
-        v_hat = torch.sum(torch.unsqueeze(attn_v, 2) * seq_features1, 1)
-        q_hat = torch.sum(torch.unsqueeze(attn_q, 2) * seq_features2, 1)
-
-        return v_hat, q_hat
-    
 
 class RGCN(nn.Module):
     def __init__(
@@ -1102,50 +1071,5 @@ class RGCN(nn.Module):
             graph.edata["norm"] if "norm" in graph.edata else h.new_empty(0),
             # graph.edata['special_weight'] if 'special_weight' in graph.edata else h.new_empty(0),
         )
-
-
-class GateFunctionClassifier(nn.Module):
-    def __init__(self, h1, h2, h3, num_labels, dropout_rate=0.1):
-        super(GateFunctionClassifier, self).__init__()
-        
-        ''' feature에 대한 정보와 중요도를 독립적으로 계산하여 학습 '''
-        # We will use a linear transformation for each feature to project them to a common dimension.
-        # feature에 대한 정보
-        self.linear_a = nn.Linear(h1, num_labels)
-        self.linear_b = nn.Linear(h2, num_labels)
-        self.linear_c = nn.Linear(h3, num_labels)
-
-        # Gating mechanisms
-        # feature에 대한 중요도
-        self.gate_a = nn.Linear(h1, num_labels)
-        self.gate_b = nn.Linear(h2, num_labels)
-        self.gate_c = nn.Linear(h3, num_labels)
-
-        self.dropout = nn.Dropout(dropout_rate)
-
-    def forward(self, a, b, c):
-        # dropout 적용으로 동적인 중요도 가중치를 반영할 때 과적합을 예방/보완
-        a, b, c = self.dropout(a), self.dropout(b), self.dropout(c)  # apply dropout
-        
-        # Apply linear transformations
-        a_proj = self.linear_a(a)
-        b_proj = self.linear_b(b)
-        c_proj = self.linear_c(c)
-
-        # Compute gate values
-        gate_a_val = torch.sigmoid(self.gate_a(a))
-        gate_b_val = torch.sigmoid(self.gate_b(b))
-        gate_c_val = torch.sigmoid(self.gate_c(c))
-
-        # Normalize gate values
-        gate_sum = gate_a_val + gate_b_val + gate_c_val
-        gate_a_val /= gate_sum
-        gate_b_val /= gate_sum
-        gate_c_val /= gate_sum
-
-        # Combine the features using the gates
-        out = gate_a_val * a_proj + gate_b_val * b_proj + gate_c_val * c_proj
-
-        return out
 
 
