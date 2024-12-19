@@ -16,7 +16,7 @@ from torch.nn import CrossEntropyLoss
 
 from dgl.nn.pytorch import RelGraphConv, GraphConv, GATConv
 
-from src1.model.utils import *
+from allennlp.nn.util import masked_softmax, masked_max, masked_mean
 
 from src.CA_GCN.GCNLayer import GraphConvolution
 from src.CA_GCN.HighWay import HighWay
