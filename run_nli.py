@@ -118,12 +118,12 @@ if __name__ == '__main__':
     cli_parser = argparse.ArgumentParser()
     # Directory
     cli_parser.add_argument("--data_dir", type=str, default="./data/snli/LALParser")
-    cli_parser.add_argument("--train_file", type=str, default= 'snli_train.jsonl')
-    cli_parser.add_argument("--eval_file", type=str, default='snli_dev.jsonl')
-    cli_parser.add_argument("--predict_file", type=str, default='snli_test.jsonl')
+    cli_parser.add_argument("--train_file", type=str, default= 'train.jsonl')
+    cli_parser.add_argument("--eval_file", type=str, default='dev.jsonl')
+    cli_parser.add_argument("--predict_file", type=str, default='test.jsonl')
 
-    cli_parser.add_argument("--model_name_or_path", type=str, default="./roberta-base/init_weight")
-    cli_parser.add_argument("--cache_dir", type=str, default="./roberta-base/init_weight")
+    cli_parser.add_argument("--model_name_or_path", type=str, default="roberta-base")
+    cli_parser.add_argument("--cache_dir", type=str, default="roberta-base")
 
     # ===================================================================================================
     
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     cli_parser.add_argument("--learning_rate", type=float, default=2e-5)
     cli_parser.add_argument("--train_batch_size", type=int, default=32)
     cli_parser.add_argument("--eval_batch_size", type=int, default= 32)
-    cli_parser.add_argument("--num_train_epochs", type=int, default=30)
+    cli_parser.add_argument("--num_train_epochs", type=int, default=5)
 
     cli_parser.add_argument("--logging_steps", type=int, default=100)
     cli_parser.add_argument("--seed", type=int, default=42)
@@ -180,7 +180,7 @@ if __name__ == '__main__':
     cli_parser.add_argument("--do_train", type=bool, default = False)
     cli_parser.add_argument("--do_eval", type=bool, default= False)
     cli_parser.add_argument("--do_predict", type=bool, default= True)
-    cli_parser.add_argument("--draw_tsne", type=bool, default= True)
+    cli_parser.add_argument("--draw_tsne", type=bool, default= False)
     cli_parser.add_argument("--draw_tsne_name",  type=str, default="tsne_42.png")
     cli_parser.add_argument("--draw_attn_map", type=bool, default= False)
     cli_args = cli_parser.parse_args()
