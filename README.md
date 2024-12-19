@@ -25,8 +25,11 @@ pip install -r requirements.txt
 ## Model Structure
 
 ## Training Your Own Models
-python run_nli.py --seed 42 --data_dir ./data/snli/LALParser --model_name_or_path bert-base --output_dir ./snli/parameter/AffinityDiffProposedModel/mix5_mean/LabelNode_wo_Pair2Label_lr2e5 --num_labels 3 --num_train_epochs 5 --do_train true --do_predict false
+```
+python run_nli.py --seed 42 --data_dir ./data/snli/LALParser --model_name_or_path bert-base --output_dir ./snli/parameter/AffinityDiffProposedModel/mix5_mean/LabelNode_wo_Pair2Label_lr2e5 --num_labels 3 --num_train_epochs 5 --from_init_weight true --do_train true --do_predict false
+```
 
 ## Evaluation/Inference With Pretrained Models
+```
 python run_nli.py --data_dir ./data/snli/LALParser --model_name_or_path bert-base --output_dir ./snli/parameter/AffinityDiffProposedModel/mix5_mean/LabelNode_wo_Pair2Label_lr2e5 --num_labels 3 --do_train false --do_predict true
-
+```
