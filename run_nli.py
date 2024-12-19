@@ -55,19 +55,7 @@ def create_model(args):
 
     print("tokenizer.sep_token_id: ", tokenizer.sep_token_id)
     if "baseline" in args.output_dir:
-        model = baseline_model(language_model=language_model, config=config)
-    elif "CAGCN" in args.output_dir:
-        model = CAGCNModel(            
-            language_model=language_model,
-            config=config,
-            max_prem_length=args.max_prem_length,
-            max_hypo_length=args.max_hypo_length,
-            device=args.device,
-            graph_dim=args.d_embed, 
-            gcn_dep=args.gcn_dep, gcn_layers=args.gcn_layers,
-            n_graph_attn_composition_layers=args.gcn_layers,
-            sep_token_id = tokenizer.sep_token_id,
-        )        
+        model = baseline_model(language_model=language_model, config=config)    
     else:
         model = AffinityDiffProposedModel( 
             language_model=language_model,
@@ -141,9 +129,7 @@ if __name__ == '__main__':
     
     cli_parser.add_argument("--output_dir", type=str,
                             # default="./roberta-base/snli/baseline")
-                            # default="./roberta-base/snli/CAGCN")
                             default="./roberta-base/snli/parameter/AffinityDiffProposedModel/mix5_mean/LabelNode_wo_Pair2Label_lr2e5")
-                            # default="./bert/snli/parameter/AffinityDiffProposedModel_wo_graphLP/mix5_mean/LabelNode_wo_Pair2Label_lr2e5")
 
     # ------------------------------------------------------------------------------------------------------------
 
