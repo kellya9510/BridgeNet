@@ -1,5 +1,7 @@
 # BridgeNet
-The official PyTorch implementation for our paper:*[Bridge to better understanding: Syntax extension with virtual linking-phrase for natural language inference](https://www.sciencedirect.com/science/article/pii/S0950705124012425)*
+The official GitHub repository is available here: [https://github.com/KUNLP/BridgeNet/](https://github.com/KUNLP/BridgeNet/)
+Our paper:*[Bridge to better understanding: Syntax extension with virtual linking-phrase for natural language inference](https://www.sciencedirect.com/science/article/pii/S0950705124012425)*
+
 
 ## Environment
 ```bash
